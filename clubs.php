@@ -38,7 +38,7 @@ function getCategories(PDO $db)
     $sql = "SELECT categories.category_id, categories.category_name FROM categories ORDER BY categories.category_name;";
 
     $statement = $db->query($sql);
-    $recordSet2 = $statement->fetchAll(PDO::FETCH_ASSOC);  
+    $recordSet2 = $statement->fetchAll(PDO::FETCH_ASSOC);
     $categories = [];
 
     foreach ($recordSet2 as $row) {
@@ -48,6 +48,7 @@ function getCategories(PDO $db)
 }
 
 $categories = getCategories($db);
+// var_dump($categories);
 
 ?>
 
@@ -103,15 +104,18 @@ $categories = getCategories($db);
                 </tr>
             <?php endforeach; ?>
         </tbody>
+    </table>
+    <br>
 
-
+    <table>
+        <!-- Displlay for club types -->
         <thead>
             <tr>
                 <th>Category</th>
             </tr>
         </thead>
         <tbody>
-             <?php foreach ($categories as $items): ?>
+            <?php foreach ($categories as $items): ?>
                 <tr>
                     <td><?= htmlspecialchars($items['category_name']) ?></td>
 
@@ -119,6 +123,23 @@ $categories = getCategories($db);
             <?php endforeach; ?>
         </tbody>
     </table>
+
+    <br>
+
+    <form action="" method="GET">
+        <label for="club_type">Select the club type you'd like to see:</label>
+        <br>
+        <select name="category_id" id="select_club_type">
+            <!-- All choices -->
+            <option value="null">All Club Types</option> <!-- Database options -->
+            <?php foreach ($categories as $items): ?>
+                <option value="<?= $items['category_id'] ?>"><?= htmlspecialchars($items['category_name']) ?></option>
+
+            <?php endforeach; ?>
+        </select>
+        <br>
+        <input type="submit" value="Search Clubs">
+    </form>
 </body>
 
 </html>
