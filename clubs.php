@@ -1,19 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
-// require __DIR__ . 'includes/databse.php';
-// require __DIR__ . 'classes/Club.php';
-include 'classes/Club.php';
-include 'includes/database.php';
+require __DIR__ . '/includes/database.php';
+require __DIR__ . '/classes/Club.php';
 
-$club= null;
+$club = null;
 
 // $clubsListed = getClubs();
 
 
- function getClubs(PDO $db)
-    {
-        $sql = "SELECT clubs.club_id, clubs.club_name, clubs.description, clubs.meeting_time, clubs.meeting_location, clubs.contact_email, clubs.category_id, categories.category_name
+function getClubs(PDO $db)
+{
+    $sql = "SELECT clubs.club_id, clubs.club_name, clubs.description, clubs.meeting_time, clubs.meeting_location, clubs.contact_email, clubs.category_id, categories.category_name
     FROM clubs
     JOIN categories
     ON clubs.category_id = categories.category_id
@@ -29,16 +28,31 @@ $club= null;
     }
 
     return $clubs;
+}
+
+$clubs = getClubs($db);
+
+
+function getCategories(PDO $db)
+{
+    $sql = "SELECT categories.category_id, categories.category_name FROM categories ORDER BY categories.category_name;";
+
+    $statement = $db->query($sql);
+    $recordSet2 = $statement->fetchAll(PDO::FETCH_ASSOC);  
+    $categories = [];
+
+    foreach ($recordSet2 as $row) {
+        $categories[] = ($row);
     }
+    return ($categories);
+}
 
-    $clubs = getClubs($db);
-
-    
+$categories = getCategories($db);
 
 ?>
 
 <!-- Print statmentes miles stone 3 -->
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -74,18 +88,33 @@ $club= null;
     <table>
         <thead>
             <tr>
-                <th>Code</th>
-                <th>Product</th>
+                <th>Club</th>
                 <th>Category</th>
-                <th>Price</th>
+                <th>Meet Times</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($clubs as $club): ?>
                 <tr>
-                    <td><?= htmlspecialchars($club->name) ?></td>
-                    <!-- Creates link to the product and it's page info -->
-                    <td><a href="product.php?id=<?= (int) $club->id ?>"><?= htmlspecialchars($club->name) ?></a></td>
+                    <td><a href="club.php?id=<?= (int) $club->id ?>"><?= htmlspecialchars($club->name) ?></a></td>
+                    <td><?= htmlspecialchars($club->catagory_name) ?></td>
+                    <td><?= htmlspecialchars($club->meeting_time) ?></td>
+
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+
+
+        <thead>
+            <tr>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+             <?php foreach ($categories as $items): ?>
+                <tr>
+                    <td><?= htmlspecialchars($items['category_name']) ?></td>
+
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -93,4 +122,3 @@ $club= null;
 </body>
 
 </html>
-
