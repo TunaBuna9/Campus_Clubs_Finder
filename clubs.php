@@ -6,18 +6,31 @@ require __DIR__ . '/includes/database.php';
 require __DIR__ . '/classes/Club.php';
 
 $club = null;
+$categoryId = 0;
 
-// $clubsListed = getClubs();
+if ($_GET) {
+    $categoryId = filter_input(INPUT_GET, "category_id", FILTER_VALIDATE_INT) ?? 0;
+}
 
-
-function getClubs(PDO $db)
+// Adding type, doesn't all for other null options
+function getClubs(PDO $db, $categoryId)
 {
-    $sql = "SELECT clubs.club_id, clubs.club_name, clubs.description, clubs.meeting_time, clubs.meeting_location, clubs.contact_email, clubs.category_id, categories.category_name
-    FROM clubs
-    JOIN categories
-    ON clubs.category_id = categories.category_id
-    ORDER BY clubs.club_name;";
+    $sql = "";
 
+    if ($categoryId == 0 || $categoryId == null ||  $categoryId == "") {
+        $sql = "SELECT clubs.club_id, clubs.club_name, clubs.description, clubs.meeting_time, clubs.meeting_location, clubs.contact_email, clubs.category_id, categories.category_name
+        FROM clubs
+        JOIN categories
+        ON clubs.category_id = categories.category_id 
+        ORDER BY clubs.club_name;";
+    } else {
+        $sql = "SELECT clubs.club_id, clubs.club_name, clubs.description, clubs.meeting_time, clubs.meeting_location, clubs.contact_email, clubs.category_id, categories.category_name
+        FROM clubs
+        JOIN categories
+        ON clubs.category_id = categories.category_id 
+        WHERE categories.category_id = $categoryId
+        ORDER BY clubs.club_name;";
+    }
 
     $statement = $db->query($sql);
     $recordSet = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -30,7 +43,7 @@ function getClubs(PDO $db)
     return $clubs;
 }
 
-$clubs = getClubs($db);
+$clubs = getClubs($db, $categoryId);
 
 
 function getCategories(PDO $db)
@@ -48,7 +61,22 @@ function getCategories(PDO $db)
 }
 
 $categories = getCategories($db);
-// var_dump($categories);
+
+
+$noClubs = "";
+if ($clubs == null) {
+    $noClubs = "We're sorry, there are no clubs availiable at the moment for NAME INSERT ";
+    //. $categories['category_name;']
+
+}
+
+
+if ($categoryId === false || $categoryId === null) {
+    $error = "Sorry, there's no club that matches that search, please try again or see below for all available clubs! ";
+    echo $error;
+} else {
+    $categoryId = getClubs($db, $categoryId);
+}
 
 ?>
 
@@ -84,45 +112,32 @@ $categories = getCategories($db);
 </head>
 
 <body>
-    <h1>Clubs</h1>
+    <h1> Clubs</h1>
 
     <table>
-        <thead>
-            <tr>
-                <th>Club</th>
-                <th>Category</th>
-                <th>Meet Times</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($clubs as $club): ?>
+        <?php echo htmlspecialchars($noClubs);
+        if ($clubs == !null) { ?>
+            <thead>
                 <tr>
-                    <td><a href="club.php?id=<?= (int) $club->id ?>"><?= htmlspecialchars($club->name) ?></a></td>
-                    <td><?= htmlspecialchars($club->catagory_name) ?></td>
-                    <td><?= htmlspecialchars($club->meeting_time) ?></td>
-
+                    <th>Club</th>
+                    <th>Category</th>
+                    <th>Meet Times</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
+            </thead>
+            <tbody>
+                <?php foreach ($clubs as $club): ?>
+                    <tr>
+                        <td><a href="club.php?id=<?= (int) $club->id ?>"><?= htmlspecialchars($club->name) ?></a></td>
+                        <td><?= htmlspecialchars($club->catagory_name) ?></td>
+                        <td><?= htmlspecialchars($club->meeting_time) ?></td>
+
+                    </tr>
+            <?php endforeach;
+            } ?>
+            </tbody>
     </table>
     <br>
 
-    <table>
-        <!-- Displlay for club types -->
-        <thead>
-            <tr>
-                <th>Category</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($categories as $items): ?>
-                <tr>
-                    <td><?= htmlspecialchars($items['category_name']) ?></td>
-
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
 
     <br>
 
@@ -131,10 +146,12 @@ $categories = getCategories($db);
         <br>
         <select name="category_id" id="select_club_type">
             <!-- All choices -->
-            <option value="null">All Club Types</option> <!-- Database options -->
+            <option value="0">All Club Types</option> <!-- Database options -->
             <?php foreach ($categories as $items): ?>
-                <option value="<?= $items['category_id'] ?>"><?= htmlspecialchars($items['category_name']) ?></option>
-
+                <option value="<?= (int) $items['category_id'] ?>"
+                    <?= (int) $items['category_id'] === $categoryId ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($items['category_name']) ?>
+                </option>
             <?php endforeach; ?>
         </select>
         <br>

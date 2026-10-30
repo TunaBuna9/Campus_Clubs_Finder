@@ -1,0 +1,16 @@
+ <table>
+        <!-- Displlay for club types -->
+        <thead>
+            <tr>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($categories as $items): ?>
+                <tr>
+                    <td><?= htmlspecialchars($items['category_name']) ?></td>
+
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
