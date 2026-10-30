@@ -57,28 +57,51 @@ else {
 <head>
     <meta charset="utf-8">
     <title><?= $club !== null ? htmlspecialchars($club->name) : 'Product' ?></title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 2rem;
-            max-width: 40rem;
-        }
-    </style>
+    <?php include 'includes/header.php' ?>
 </head>
 
 <body>
-    <p><a href="clubs.php">Back to Clubs List</a></p>
+    <?php include 'includes/navigation.php' ?>
+    <main class="container-fluid">
+        <div class="table-borders p-3 club-pad">
 
-    <?php if ($club !== null): ?>
-        <h1><?= htmlspecialchars($club->name) ?></h1>
-        <p><?= nl2br(htmlspecialchars($club->catagory_name)) ?></p>
-        <p><?= nl2br(htmlspecialchars($club->description)) ?></p>
-        <p><?= nl2br(htmlspecialchars($club->meeting_time)) ?></p>
-        <p><?= nl2br(htmlspecialchars($club->location)) ?></p>
-        <p><?= nl2br(htmlspecialchars($club->email)) ?></p>
-    <?php else: ?>
-        <p><?= htmlspecialchars($error ?? 'Eeeeeee') ?></p>
-    <?php endif; ?>
+            <div class="row">
+                <div class="  col-sm-12 col-lg-8">
+                    <p><a href="clubs.php"><i class="fa-solid fa-arrow-left-long"></i> Back to Clubs List</a></p>
+
+                    <p class="card-text"> <?php if ($club !== null): ?>
+
+                    <h1><?= htmlspecialchars($club->name) ?></h1>
+                    <p class="text-secondary"><?= nl2br(htmlspecialchars($club->catagory_name)) ?></p>
+                    <p class="ps-3 pe-3"><?= nl2br(htmlspecialchars($club->description)) ?></p>
+                    <p><b>When:</b> <?= nl2br(htmlspecialchars($club->meeting_time)) ?></p>
+                    <p><b>Where:</b> <?= nl2br(htmlspecialchars($club->location)) ?></p>
+
+
+
+                    <p>For more details or questions, contact 
+
+                        <a href= "mailto:<?= nl2br(htmlspecialchars($club->email)) ?>"><?= nl2br(htmlspecialchars($club->email)) ?></a>
+
+                    </p>
+                <?php else: ?>
+                    <p><?= htmlspecialchars($error ?? "Sorry, that club couldn't be found.") ?></p>
+
+
+                <?php endif; ?></p>
+
+
+                </div>
+                <div class="col-sm-12 col-lg-4">
+                    <div class="card">
+                        <img src="images/campus.jpg" class="card-img" alt="Campus building">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
 </body>
 
 </html>

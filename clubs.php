@@ -64,16 +64,21 @@ $categories = getCategories($db);
 
 
 $noClubs = "";
+$spacer="";
+$spacer2="";
 if ($clubs == null) {
     $noClubs = "We're sorry, there are no clubs availiable at the moment for NAME INSERT ";
     //. $categories['category_name;']
+    $spacer="<br>";
+$spacer2="...";
+
 
 }
 
-
+$error="";
 if ($categoryId === false || $categoryId === null) {
-    $error = "Sorry, there's no club that matches that search, please try again or see below for all available clubs! ";
-    echo $error;
+    $error = "Sorry, there's no club that matches that search.. <br> Please try again or see above for all available clubs! ";
+    
 } else {
     $categoryId = getClubs($db, $categoryId);
 }
@@ -86,77 +91,75 @@ if ($categoryId === false || $categoryId === null) {
 
 <head>
     <meta charset="utf-8">
-    <title>test</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 2rem;
-        }
-
-        table {
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            border: 1px solid #adb5bd;
-            padding: 0.4rem 0.8rem;
-            text-align: left;
-        }
-
-        th {
-            background: #343a40;
-            color: #fff;
-        }
-    </style>
+    <title>Greenfeild Clubs</title>
+    <?php include 'includes/header.php' ?>
 </head>
 
 <body>
-    <h1> Clubs</h1>
-
-    <table>
-        <?php echo htmlspecialchars($noClubs);
-        if ($clubs == !null) { ?>
-            <thead>
-                <tr>
-                    <th>Club</th>
-                    <th>Category</th>
-                    <th>Meet Times</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($clubs as $club): ?>
-                    <tr>
-                        <td><a href="club.php?id=<?= (int) $club->id ?>"><?= htmlspecialchars($club->name) ?></a></td>
-                        <td><?= htmlspecialchars($club->catagory_name) ?></td>
-                        <td><?= htmlspecialchars($club->meeting_time) ?></td>
-
-                    </tr>
-            <?php endforeach;
-            } ?>
-            </tbody>
-    </table>
-    <br>
+    <?php include 'includes/navigation.php' ?>
 
 
-    <br>
+    <main class="container-fluid mb-3">
+        <h1 class="text-center mt-3 mb-3 fw-bold"> Clubs</h1>
+        
+        <div class=table-borders>
+            <p class="text-center m-0"><?php echo $spacer . htmlspecialchars($noClubs) . $spacer . $spacer2; ?></p>
+            <table class="table table-striped mb-0">
+                
+                <?php if ($clubs == !null) { ?>
+                    <thead class="table-success">
+                        <tr>
+                            <th>Club</th>
+                            <th>Category</th>
+                            <th>Meet Times</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($clubs as $club): ?>
+                            <tr>
+                                <td><a href="club.php?id=<?= (int) $club->id ?>"><?= htmlspecialchars($club->name) ?></a></td>
+                                <td class="column"><?= htmlspecialchars($club->catagory_name) ?></td>
+                                <td class="column"><?= htmlspecialchars($club->meeting_time) ?></td>
 
-    <form action="" method="GET">
-        <label for="club_type">Select the club type you'd like to see:</label>
+                            </tr>
+                    <?php endforeach;
+                    } ?>
+                    </tbody>
+            </table>
+        </div>
+
         <br>
-        <select name="category_id" id="select_club_type">
-            <!-- All choices -->
-            <option value="0">All Club Types</option> <!-- Database options -->
-            <?php foreach ($categories as $items): ?>
-                <option value="<?= (int) $items['category_id'] ?>"
-                    <?= (int) $items['category_id'] === $categoryId ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($items['category_name']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <br>
-        <input type="submit" value="Search Clubs">
-    </form>
+
+        <div class="table-borders text-center filter-box">
+            <h2 class="mt-3 mb-3 fw-bold">Filter by club type</h2>
+
+            <form action="" method="GET">
+                <label for="category_id">
+                    <p>Select a category:</p>
+                </label>
+                <select name="category_id" id="category_id">
+                    <!-- All choices -->
+                    <option value="0">All Club Types</option> <!-- Database options -->
+                    <?php foreach ($categories as $items): ?>
+                        <option value="<?= (int) $items['category_id'] ?>"
+                            <?= (int) $items['category_id'] === $categoryId ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($items['category_name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select><br>
+                <button class="subButton" type="submit">Search Clubs</button>
+            </form>
+
+            <!-- FINISH ERROR DESIGN -->
+            <?php if ($error){echo $error;}?>
+
+        </div>
+
+
+
+
+    </main>
+
 </body>
 
 </html>
