@@ -64,21 +64,16 @@ $categories = getCategories($db);
 
 
 $noClubs = "";
-$spacer="";
-$spacer2="";
+$noClubs2 = "";
+
 if ($clubs == null) {
-    $noClubs = "We're sorry, there are no clubs availiable at the moment for NAME INSERT ";
-    //. $categories['category_name;']
-    $spacer="<br>";
-$spacer2="...";
-
-
+    $noClubs = "We're sorry, there are no clubs available for this at the moment.";
+    $noClubs2 = "Check back later, or check out our other available clubs!";
 }
 
-$error="";
+$error = "";
 if ($categoryId === false || $categoryId === null) {
-    $error = "Sorry, there's no club that matches that search.. <br> Please try again or see above for all available clubs! ";
-    
+    $error = "Sorry, there's no club that matches that search.. <br> Please try again or see above for all available clubs!";
 } else {
     $categoryId = getClubs($db, $categoryId);
 }
@@ -101,11 +96,15 @@ if ($categoryId === false || $categoryId === null) {
 
     <main class="container-fluid mb-3">
         <h1 class="text-center mt-3 mb-3 fw-bold"> Clubs</h1>
-        
+
         <div class=table-borders>
-            <p class="text-center m-0"><?php echo $spacer . htmlspecialchars($noClubs) . $spacer . $spacer2; ?></p>
+
+
+            <?php if ($noClubs) { ?>
+                <p class="text-center mt-3"> <?php echo htmlspecialchars($noClubs) ?><br><?php echo htmlspecialchars($noClubs2) ?></p>
+            <?php } ?>
             <table class="table table-striped mb-0">
-                
+
                 <?php if ($clubs == !null) { ?>
                     <thead class="table-success">
                         <tr>
@@ -151,7 +150,9 @@ if ($categoryId === false || $categoryId === null) {
             </form>
 
             <!-- FINISH ERROR DESIGN -->
-            <?php if ($error){echo $error;}?>
+            <?php if ($error) { ?>
+                <p class="text-danger"><b><?php echo $error; ?> </b></p>
+            <?php } ?>
 
         </div>
 

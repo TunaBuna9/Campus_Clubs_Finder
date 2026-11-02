@@ -79,29 +79,37 @@ else {
 
 
 
-                    <p>For more details or questions, contact 
+                    <p>For more details or questions, contact
 
-                        <a href= "mailto:<?= nl2br(htmlspecialchars($club->email)) ?>"><?= nl2br(htmlspecialchars($club->email)) ?></a>
+                        <a href="mailto:<?= nl2br(htmlspecialchars($club->email)) ?>"><?= nl2br(htmlspecialchars($club->email)) ?></a>
 
                     </p>
                 <?php else: ?>
-                    <p><?= htmlspecialchars($error ?? "Sorry, that club couldn't be found.") ?></p>
+                    <p class="text-center"><?= htmlspecialchars($error ?? "Sorry, that club couldn't be found.") ?></p>
 
 
                 <?php endif; ?></p>
 
 
                 </div>
+
                 <div class="col-sm-12 col-lg-4">
                     <div class="card">
-                        <img src="images/campus.jpg" class="card-img" alt="Campus building">
+                        <?php if ($error): { ?>
+                                <img src="images/group.jpg" class="card-img" alt="Group of people studying together">
+
+                            <?php } ?>
+                        <?php else: ?>
+
+                            <img src="images/campus.jpg" class="card-img" alt="Campus building">
+                        <?php endif; ?>
 
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    
+
 </body>
 
 </html>
