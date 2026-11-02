@@ -45,7 +45,6 @@ function getClubs(PDO $db, $categoryId)
 
 $clubs = getClubs($db, $categoryId);
 
-
 function getCategories(PDO $db)
 {
     $sql = "SELECT categories.category_id, categories.category_name FROM categories ORDER BY categories.category_name;";
@@ -62,7 +61,7 @@ function getCategories(PDO $db)
 
 $categories = getCategories($db);
 
-
+// Messages for if there is no clubs
 $noClubs = "";
 $noClubs2 = "";
 
@@ -93,13 +92,10 @@ if ($categoryId === false || $categoryId === null) {
 <body>
     <?php include 'includes/navigation.php' ?>
 
-
     <main class="container-fluid mb-3">
         <h1 class="text-center mt-3 mb-3 fw-bold"> Clubs</h1>
 
         <div class=table-borders>
-
-
             <?php if ($noClubs) { ?>
                 <p class="text-center mt-3"> <?php echo htmlspecialchars($noClubs) ?><br><?php echo htmlspecialchars($noClubs2) ?></p>
             <?php } ?>
@@ -155,9 +151,6 @@ if ($categoryId === false || $categoryId === null) {
             <?php } ?>
 
         </div>
-
-
-
 
     </main>
 

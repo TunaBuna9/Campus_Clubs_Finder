@@ -5,10 +5,7 @@ declare(strict_types=1);
 require __DIR__ . '/includes/database.php';
 require __DIR__ . '/classes/Club.php';
 
-$club = null;
-
-// $clubsListed = getClubs();
-
+$error = '';
 
 function getClubs(PDO $db, int $user_id): ?Club
 {
@@ -18,35 +15,28 @@ function getClubs(PDO $db, int $user_id): ?Club
     ON clubs.category_id = categories.category_id
    WHERE clubs.club_id = $user_id ";
 
-
-
     $statement = $db->query($sql);
     $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if ($row == null){
+        return null;
+    }
 
     return Club::fromRow($row);
 }
 
-
-// $clubs = getClubs($db);
 $user_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-$club = null;
-$error = '';
-
-if ($user_id === null || $user_id === false || $user_id === 0) {
+if ($user_id === false ) {
     $error = "Sorry, that's not a valid club, please try your search again or select an item from the Clubs List";
 }
-// elseif ($user_id = $club){
-//      $error = "Sorry, there's no club with that ID yet, please try your search again or select an item from the Clubs List";
-// }
 
 else {
     $club = getClubs($db, $user_id);
     if ($club === null) {
-        $error = "No product has the ID $user_id.";
+        $error = "Sorry, there's no club with the ID " . $user_id . " yet, please try your search again or select an item from the Clubs List";
     }
 }
-
 
 ?>
 
@@ -76,8 +66,6 @@ else {
                     <p class="ps-3 pe-3"><?= nl2br(htmlspecialchars($club->description)) ?></p>
                     <p><b>When:</b> <?= nl2br(htmlspecialchars($club->meeting_time)) ?></p>
                     <p><b>Where:</b> <?= nl2br(htmlspecialchars($club->location)) ?></p>
-
-
 
                     <p>For more details or questions, contact
 

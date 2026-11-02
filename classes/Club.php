@@ -33,14 +33,11 @@ class Club
 
         $this->catagory_id = $catagory_id;
         $this->catagory_name = $catagory_name;
-        
     }
-
-   
 
     public static function fromRow(array $row): Club
     {
-        // Names must match colums in table, or it errors - That's why it wouldn't work
+    //    Side note: Names MUST match table colums
         return new Club(
             $row['club_name'], //Broken
             $row['description'],
