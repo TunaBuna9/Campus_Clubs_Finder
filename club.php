@@ -18,29 +18,28 @@ function getClubs(PDO $db, int $user_id): ?Club
     $statement = $db->query($sql);
     $row = $statement->fetch(PDO::FETCH_ASSOC);
 
-    if ($row == null){
+    // If the id is not found in the databse
+    if ($row == null) {
         return null;
     }
 
     return Club::fromRow($row);
 }
 
+// ID formatting + error handling
 $user_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
-if ($user_id === false ) {
-    $error = "Sorry, that's not a valid club, please try your search again or select an item from the Clubs List";
-}
-
-else {
+if ($user_id === false) {
+    $error = "Sorry, that's not a valid club, please try your search again or select an item from the Clubs List.";
+    $club = null;
+} else {
     $club = getClubs($db, $user_id);
     if ($club === null) {
-        $error = "Sorry, there's no club with the ID " . $user_id . " yet, please try your search again or select an item from the Clubs List";
+        $error = "Sorry, there's no club with the ID " . $user_id . " yet, please try your search again or select an item from the Clubs List.";
     }
 }
 
 ?>
 
-<!-- Print statmentes miles stone 3 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,6 +54,7 @@ else {
     <main class="container-fluid">
         <div class="table-borders p-3 club-pad">
 
+            <!-- Display Table + additional formmatting if there's no data -->
             <div class="row">
                 <div class="  col-sm-12 col-lg-8">
                     <p><a href="clubs.php"><i class="fa-solid fa-arrow-left-long"></i> Back to Clubs List</a></p>
@@ -68,19 +68,17 @@ else {
                     <p><b>Where:</b> <?= nl2br(htmlspecialchars($club->location)) ?></p>
 
                     <p>For more details or questions, contact
-
                         <a href="mailto:<?= nl2br(htmlspecialchars($club->email)) ?>"><?= nl2br(htmlspecialchars($club->email)) ?></a>
-
                     </p>
+
+                    <!-- Errors display -->
                 <?php else: ?>
-                    <p class="text-center"><?= htmlspecialchars($error ?? "Sorry, that club couldn't be found.") ?></p>
-
-
+                    <p class="text-center"><?= htmlspecialchars($error) ?></p>
                 <?php endif; ?></p>
-
 
                 </div>
 
+                <!-- Image display, secondary image to go alongside errors -->
                 <div class="col-sm-12 col-lg-4">
                     <div class="card">
                         <?php if ($error): { ?>

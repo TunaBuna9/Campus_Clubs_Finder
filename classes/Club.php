@@ -39,14 +39,14 @@ class Club
     {
     //    Side note: Names MUST match table colums
         return new Club(
-            $row['club_name'], //Broken
+            $row['club_name'],
             $row['description'],
             $row['meeting_time'],
-            $row['meeting_location'], //Broken
-            $row['contact_email'],  //Broken
+            $row['meeting_location'],
+            $row['contact_email'],
             (int) $row['category_id'],
             $row['category_name'],
-            (int) $row['club_id'] //Broken
+            (int) $row['club_id']
         );
     }
     

@@ -9,13 +9,8 @@ $password = '';
 
 try {
     $db = new PDO($dsn, $username, $password);
-   
-
 } catch (PDOException $e) {
     error_log($e->getMessage());             
-    exit('<p>Sorry, the shop is unavailable right now.</p>');   // the visitor sees this
+    exit('<p>Sorry, this page is currently unavailable...</p>');
 }
-
-
-// Page Verrified - working
 

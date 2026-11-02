@@ -33,7 +33,6 @@ table {
 
 }
 
-
 .subButton {
     padding-left: 5%;
     padding-right: 5%;
@@ -56,36 +55,35 @@ table {
 
 }
 
-.card-body{
-    border:none;
+.card-body {
+    border: none;
 }
 
-.card{
+.card {
     width: 70%;
     margin: auto;
 }
 
-.card-img{
+.card-img {
     border: 3px solid black;
 }
 
-.club-pad{
+.club-pad {
     margin-top: 3%;
 }
 
+/* Media Quearies */
 @media (min-width:768px) {
     .filter-box {
         margin-left: 10vw;
         margin-right: 10vw;
     }
 
-    .card{
-    width: 50%;
-    margin: auto;
+    .card {
+        width: 50%;
+        margin: auto;
+    }
 }
-}
-
-
 
 @media (min-width: 992px) {
     .table-borders {
@@ -95,18 +93,16 @@ table {
     .filter-box {
         margin-left: 20vw;
         margin-right: 20vw;
-
     }
 
-    .card{
-    width: 100%;
-    margin: auto;
-    margin-top: 30%;
-}
+    .card {
+        width: 100%;
+        margin: auto;
+        margin-top: 30%;
+    }
 
-.club-pad{
-    margin-top: 8%;
-}
+    .club-pad {
+        margin-top: 8%;
+    }
 
 }
-

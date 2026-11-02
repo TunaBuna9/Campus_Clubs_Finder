@@ -12,7 +12,6 @@ if ($_GET) {
     $categoryId = filter_input(INPUT_GET, "category_id", FILTER_VALIDATE_INT) ?? 0;
 }
 
-// Adding type, doesn't all for other null options
 function getClubs(PDO $db, $categoryId)
 {
     $sql = "";
@@ -79,7 +78,6 @@ if ($categoryId === false || $categoryId === null) {
 
 ?>
 
-<!-- Print statmentes miles stone 3 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,6 +93,7 @@ if ($categoryId === false || $categoryId === null) {
     <main class="container-fluid mb-3">
         <h1 class="text-center mt-3 mb-3 fw-bold"> Clubs</h1>
 
+        <!-- Club display table -->
         <div class=table-borders>
             <?php if ($noClubs) { ?>
                 <p class="text-center mt-3"> <?php echo htmlspecialchars($noClubs) ?><br><?php echo htmlspecialchars($noClubs2) ?></p>
@@ -115,7 +114,6 @@ if ($categoryId === false || $categoryId === null) {
                                 <td><a href="club.php?id=<?= (int) $club->id ?>"><?= htmlspecialchars($club->name) ?></a></td>
                                 <td class="column"><?= htmlspecialchars($club->catagory_name) ?></td>
                                 <td class="column"><?= htmlspecialchars($club->meeting_time) ?></td>
-
                             </tr>
                     <?php endforeach;
                     } ?>
@@ -125,6 +123,7 @@ if ($categoryId === false || $categoryId === null) {
 
         <br>
 
+        <!-- Filter Table + optional error displays -->
         <div class="table-borders text-center filter-box">
             <h2 class="mt-3 mb-3 fw-bold">Filter by club type</h2>
 
@@ -145,7 +144,7 @@ if ($categoryId === false || $categoryId === null) {
                 <button class="subButton" type="submit">Search Clubs</button>
             </form>
 
-            <!-- FINISH ERROR DESIGN -->
+           <!-- Error statement display + formatting -->
             <?php if ($error) { ?>
                 <p class="text-danger"><b><?php echo $error; ?> </b></p>
             <?php } ?>

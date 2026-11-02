@@ -12,4 +12,4 @@
 <link rel="stylesheet" href="includes/styles.css">
 
 <!-- Icon -->
-<!-- <link rel="icon" type="image/x-icon" href="/images/carrot-solid.png"> -->
+<link rel="icon" type="image/x-icon" href="images/book.png">
